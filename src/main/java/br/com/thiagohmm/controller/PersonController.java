@@ -1,5 +1,6 @@
 package br.com.thiagohmm.controller;
 
+import br.com.thiagohmm.exception.PersonNotFoundException;
 import br.com.thiagohmm.model.Person;
 import br.com.thiagohmm.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class PersonController {
         try {
             Long id = Long.parseLong(idStr);
             return personService.listByID(id);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | PersonNotFoundException e) {
             throw new IllegalArgumentException("ID inválido: " + idStr);
         }
     }
@@ -44,6 +45,8 @@ public class PersonController {
             personService.delete(id);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido: " + idStr);
+        } catch (PersonNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
