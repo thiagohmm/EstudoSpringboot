@@ -3,10 +3,11 @@ package br.com.thiagohmm.service;
 import br.com.thiagohmm.exception.PersonNotFoundException;
 import br.com.thiagohmm.model.Person;
 import br.com.thiagohmm.repository.PersonRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +16,10 @@ public class PersonService {
     @Autowired
     PersonRepository personRepository;
 
-    public Person listByID(Long id) throws PersonNotFoundException {
+    private Logger log = LoggerFactory.getLogger(PersonService.class);
 
+    public Person listByID(Long id) throws PersonNotFoundException {
+        log.info("Finding one person by ID: {}", id);
         return personRepository.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException("Person not found with id: " + id)); // Use a custom exception
     }
@@ -25,6 +28,14 @@ public class PersonService {
 
 
     public Person create(Person person) {
+      log.info("Creating a new person: {}", person);
+        // Validate the person object before saving
+        if (person.getFirstName() == null || person.getLastName() == null) {
+           log.warn("First name and last name are required for creating a person.");
+
+            throw new IllegalArgumentException("First name and last name are required.");
+        }
+        // Save the person to the database
        return personRepository.save(person);
 
     }
