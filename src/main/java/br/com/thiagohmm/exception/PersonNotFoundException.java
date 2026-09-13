@@ -1,11 +1,7 @@
 package br.com.thiagohmm.exception;
 
-public class PersonNotFoundException extends Throwable {
+public class PersonNotFoundException extends RuntimeException {
     public PersonNotFoundException(String message) {
         super(message);
-    }
-
-    public Object PersonNotFoundException(String message) {
-        return (message);
     }
 }

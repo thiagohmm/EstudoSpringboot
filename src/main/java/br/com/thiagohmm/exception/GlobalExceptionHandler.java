@@ -31,9 +31,9 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(PersonNotFoundException.class)
-    public ResponseEntity<ErrorResponse> personNotFounfException(IllegalArgumentException ex) {
+    public ResponseEntity<ErrorResponse> handlePersonNotFoundException(PersonNotFoundException ex) {
         // Cria uma resposta de erro com a mensagem da exceção
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
